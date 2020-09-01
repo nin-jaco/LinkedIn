@@ -1,0 +1,26 @@
+//---conn string---
+	
+<connectionStrings>
+	<add name="DefaultConnection" connectionString="Data Source=.;Initial Catalog=ReactAspx;Integrated Security=SSPI;" providerName="System.Data.SqlClient" />
+</connectionStrings>
+	
+//---03_02----------------
+public string GetUserId()
+{
+	int uid = -1;
+	if (Session["UserId"] != null)
+		uid = Convert.ToInt32(Session["UserId"].ToString());
+	return uid.ToString();
+}
+
+
+//------for 03_03-----------------
+    OrderDetail orderDetail = new OrderDetail
+    {
+        OrderId = orderId,
+        FoodItemId = f.Id,
+        Quantity = f.Quantity,
+        TotalPrice = f.Price * f.Quantity,
+    };
+
+

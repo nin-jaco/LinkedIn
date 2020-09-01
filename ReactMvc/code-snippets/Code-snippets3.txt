@@ -1,0 +1,185 @@
+
+npm install --save typescript
+
+
+---html 1 start-------------
+
+<div class="title-big">
+    <img src="/Img/logo.png" style="width:100px" />
+    Nadia’s Garden Restaurant
+</div>
+
+<div>
+    <div id="foodorder" style="border:0px solid red">
+    </div>
+</div>
+
+<script src="~/dist/bundle.js"></script>
+
+---html 1 end-------------
+
+
+
+-- react models----
+
+export interface FoodModel {
+    Id: number;
+    Name: string;
+    Description: string;
+    Picture: string;
+    Price: number;
+    Quantity: number;
+}
+
+export interface IAppState {
+        items: FoodModel[];
+	myOrder: FoodModel[];
+	showPopup: boolean;
+	userId: number;
+	orderPlaced: boolean;
+}
+
+
+----------------------snippet 1------------------------
+  this.state = { items: null, myOrder: null, showPopup: false, userId: 0, orderPlaced: false }; 
+
+
+loadMenusFromServer() { 
+		var xhr = new XMLHttpRequest();
+		xhr.open('get', '/data/GetMenuList/', true);
+		xhr.onload = function () {
+			var dataitems = JSON.parse(xhr.responseText);
+			var tmp: IAppState = this.state;
+			tmp.items = dataitems;
+			this.setState(tmp); 
+		}.bind(this);
+		xhr.send();
+	}
+
+
+---------------------snippet 2------------------------
+<div key={menu.Id}>
+<b>{menu.Name} </b>    <br />
+<img style={{ width: '100px', float: 'left', margin: '5px' }} src={"/img/" + menu.Picture} />{menu.Description}<p />
+<div>${menu.Price}</div><hr />
+</div>
+
+
+---------------------snippet 3 ------------------------
+<link rel="stylesheet" type="text/css" href="/Content/food.css">
+
+
+---------------------snippet 4 ------------------------
+	getLoginStatus() {
+		var xhr = new XMLHttpRequest();
+		xhr.open('get', '/data/GetUserId/', true);
+		xhr.onload = function () {
+			var userid: number = parseInt(xhr.responseText);
+			var tmp: IAppState = this.state;
+			tmp.userId = userid;
+			this.setState(tmp);
+
+		}.bind(this);
+		xhr.send();
+	}
+		 
+
+
+---------------------snippet 4 ------------------------
+    addToCart(id) {
+        if (this.state.userId < 1) {
+            alert('Log in to continue!');
+            return;
+        }
+        id--;  
+        var myCart = this.state.myOrder || [];
+        var allItems = this.state.items;
+        if (myCart.indexOf(allItems[id]) > -1) {
+            var itemToOrder = myCart.find(m => m.Id === allItems[id].Id); 
+            itemToOrder["Quantity"] = itemToOrder["Quantity"] + 1; 
+        }
+        else {
+            var itemToOrder = allItems[id];
+            itemToOrder["Quantity"] = 1; 
+            myCart.push(allItems[id]);
+        }
+
+        var tmp: IAppState = this.state;
+        tmp.myOrder = myCart;
+        tmp.showPopup = false;
+        this.setState(tmp);
+ 
+    } 
+-------------------snippet 5 --------------------------
+  var myItems = myCart.map(function (menu) {
+            total += menu.Price * menu.Quantity;
+            return (
+                <div key={menu.Id}>
+                    <img style={{ width: '75px', float: 'left', margin: '5px' }} src={"/img/" + menu.Picture} />
+                    {menu.Name}<br />
+                    Qty: {menu.Quantity}<br />
+                    Price: ${menu.Price * menu.Quantity} <br />  
+                    <hr />
+                </div>
+
+            );
+
+        }, this);
+
+
+-------------------snippet 5 --------------------------
+
+<div id="dvcart">
+	<div id="cartContent">
+		 {myItems}
+	</div>
+                         
+</div>
+
+--------------------snippet 5b --------------------------
+
+        var totalAndContinueLink = <div className="grandTotal cartEmpty">Cart Empty!</div>;
+        if (total > 0)
+            totalAndContinueLink =
+                <div className="grandTotal cartNotEmpty">Grand Total: ${total}
+                    <button className="greenBtn continueOrder">Continue Order</button>
+                </div>;
+
+------------------------snippet 6 --------------------------
+
+		var cart = document.getElementById("dvcart"); 
+		var menu = document.getElementById("dvmenu"); 
+
+		if (this.state.userId < 1) {
+			myItems = null;
+			if (cart != null)
+				cart.style.display = "none"; 
+			if (menu != null)
+				menu.style.flex = "0 0 85%"; 
+		}
+		else {
+			if (cart != null)
+				cart.style.display = "block";
+			if (menu != null)
+				menu.style.flex = "0 0 55%"; 
+		} 
+
+------------------------snippet 7 --------------------------
+ removeFromCart(id) {
+        if (this.state.userId < 1) {
+            alert('Log in to continue!');
+            return;
+        }
+        var myCart = this.state.myOrder || [];
+        var allItems = this.state.items;       
+        myCart.splice(id, 1);
+        
+        var tmp: IAppState = this.state;
+        tmp.myOrder = myCart;
+        this.setState(tmp);
+    }
+
+    continueOrder() {
+       //todo
+	alert('coding in progress');
+    }

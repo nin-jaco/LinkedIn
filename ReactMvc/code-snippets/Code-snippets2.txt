@@ -1,0 +1,94 @@
+//-----test code---
+
+import * as React from "react";
+
+import * as ReactDOM from "react-dom";
+
+ReactDOM.render(
+    <div>
+        <h2>Test</h2>
+    </div>,
+    document.getElementById("foodorder")
+);
+
+//--------------command line--- 
+npm install -g webpack  
+
+npm install --save typescript
+
+//add webpack.config.js
+
+//add tsconfig.json
+
+tsc -v
+
+npm install --save react @types/react 
+npm install --save react-dom @types/react-dom
+
+npm install --save typescript awesome-typescript-loader source-map-loader 
+
+
+
+//Run this to create package.json
+npm init
+ 
+//now check intellisense 
+//run below command if intellisense not working
+typings install dt~react dt~react-dom -–save
+
+npm install   
+npm link typescript  
+
+npm install --save typescript 
+
+
+//---webpack.config.js---------------------
+
+module.exports = {
+    entry: "./Content/src/food.tsx",
+    mode: "development",
+    output: {
+        filename: "bundle.js"
+    }, 
+    resolve: {
+        extensions: [ '.ts', '.js', '.tsx', '.jsx']
+    },
+ 
+    devtool: 'source-map',
+
+    // Add the loader for .ts files.
+    module: {
+        rules: [
+		  {
+		      test: /\.tsx?$/,
+		      loader: 'awesome-typescript-loader'
+		  }
+        ]
+    }
+};
+
+
+//------------tsconfigs --------------
+{
+	"compilerOptions": {
+		"target": "es6",
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"noResolve": false,
+		"noImplicitAny": false,
+		"removeComments": true,
+		"sourceMap": true,
+		"allowJs": false, 
+		"jsx": "react"
+	},
+	"include": [ "./Content/src/**/*" ],
+  "exclude": [
+    "./plugins/**/*",
+    "./typings/**/*",
+    "./built/**/*",
+    "node_modules",
+    "wwwroot",
+    "Scripts/*"
+
+  ]
+}

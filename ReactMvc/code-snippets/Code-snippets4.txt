@@ -1,0 +1,41 @@
+
+----------------------snippet 1------------------------
+{this.state.showPopup ?
+                    <Popup
+                        handlerFromParent={this.handleDataFromChild}
+                        myOrder={this.state.myOrder}
+                        userId={this.state.userId} /> : null}
+
+
+---------------------snippet 2------------------------
+     continueOrder() {
+        var tmp: IAppState = this.state;
+        tmp.showPopup = true;
+        this.setState(tmp);
+        document.getElementById('dvcart').style.visibility = 'hidden';
+    }
+
+---------------------snippet 3------------------------
+   handleDataFromChild(popupShown, isOrderPlaced) {
+        var tmp: IAppState = this.state;
+
+        if (isOrderPlaced) {
+            tmp.myOrder = null;
+            tmp.orderPlaced = true;
+            tmp.showPopup = false;
+        }
+        else {
+            tmp.orderPlaced = false;
+            tmp.showPopup = false;
+        }
+        this.setState(tmp);
+        document.getElementById('dvcart').style.visibility = 'visible';
+
+    }
+
+---------------------snippet 4------------------------
+        if (this.state.orderPlaced)
+			cart.innerHTML ='<div class="orderPlaced">Order Placed successfully</div>';
+
+
+  
