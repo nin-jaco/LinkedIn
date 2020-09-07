@@ -1,6 +1,8 @@
 
 npm install --save typescript
 
+npm i -g webpack-cli
+
 
 ---html 1 start-------------
 
