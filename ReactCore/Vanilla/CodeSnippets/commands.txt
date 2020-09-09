@@ -1,0 +1,12 @@
+root>
+dotnet new react
+dotnet new sln
+dotnet run
+
+
+clientApp>
+npm install axios --save
+npm audit fix
+
+Reduct
+npm install redux react-redux react-thunk
