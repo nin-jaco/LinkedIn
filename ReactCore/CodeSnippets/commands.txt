@@ -10,3 +10,4 @@ npm audit fix
 
 Reduct
 npm install redux react-redux react-thunk
+
